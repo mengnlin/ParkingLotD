@@ -1,0 +1,39 @@
+Q: how many floor does the parking lot has?
+A: Multi-floor parking structure/mid size parking lot 
+Q: does this parking lot has multiple buildings?
+A: only one building 
+Q:how mant entrance and exit?
+A:multiple entance and exit
+Q: how customers get assign a spot
+A: Random selected 
+Q: do we reserved spot for handicap drivers?
+A: How does the payment system look like? cash/credit? by a person/by mechine and also rate?
+Q:rate based on size and hour
+A: 
+Q:entrance point: if filled stop taking cars 
+
+Actors: 
+1. Admin: add/modify floors, add parking spot for each floor, entrance panel and exit panel, and rate
+2. customers: get ticket, payment, choose size of parking spot;
+3.system: if parking lot is full; check if we have specific parking spot for customers; print ticket, take payments, assign parking spot;
+
+
+Use cases:
+1: add/modify floors,parking spots,entrance and exit panel 
+2: geting ticket, make payment, choose size of parking spot 
+3:if full(parking lot);
+
+classes:
+Parking lot 
+floor 
+spot 
+entrance panel
+exit panel
+rate
+customers
+ticket 
+system 
+
+
+
+
