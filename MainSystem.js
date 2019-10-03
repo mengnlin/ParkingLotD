@@ -59,10 +59,17 @@ class MainSystem {
     let currentSection = this._getSection(sectionName);
     let ticket = currentSection.searchTicket(ticketId);
     let amount = currentSection.rate.calculateRate(ticket.enter, ticket.exit);
+    // rate is an internal property of SectionSystem. MainSystem shouldn't have access to it.
+    // better ask the section for the amount: currentSection.calculateRate(...)
     ticket.balanceDue = amount;
     console.log("Your Amount Due is ", ticket.balanceDue);
   }
   takePayment(paymentAmount, sectionName, ticketId) {
+    // a bonus question: how can we not ask user for ticketId again and again?
+    // user already gave us ticketId in askPayment, how do we reuse that?
+    // Think about http and browswer, why don't we need to enter user name and password
+    // every time we navigate to a different amazon page?
+    // hint: session
     let currentSection = this._getSection(sectionName);
     let ticket = currentSection.searchTicket(ticketId);
     let rate = ticket.balanceDue;
