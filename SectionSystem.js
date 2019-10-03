@@ -3,6 +3,11 @@ class SectionSystem {
   constructor(name, unitPrice, unitMinute) {
     this.name = name;
     this.rate = new Rate(unitPrice, unitMinute);
+    // Better construct the Rate outside and pass the Rate object into SectionSystem
+    // The reason is: Does Rate belongs to SectionSystem or is it an separatable entity?
+    // The admin can specify the rate, that means admin should also have access to Rate.
+    // while for SectionSystem, does it need to know the unitPrice and unitMinute other than calculating the price(which is
+    // already handled inside Rate)?
     this.handicappedTicketandDriver = new Map();
     this.normalTicketandDriver = new Map();
     this.handicappedCapacity = 1;
