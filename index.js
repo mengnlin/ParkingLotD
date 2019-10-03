@@ -1,4 +1,4 @@
-const { ParkingLot, Car } = require("./ParkingLot");
+const { ParkingLot, Car } = require("./MainSystem");
 
 const car = new Car();
 

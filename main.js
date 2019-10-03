@@ -1,0 +1,10 @@
+const MainSystem = require("./MainSystem");
+const Payment = require("./Payment");
+let mainSystem = new MainSystem("Dublin");
+mainSystem.displaySections();
+mainSystem.selectSection("Hourly", true, "12345");
+mainSystem.sections.get("Hourly").scanTicket(1);
+mainSystem.startExitProcess(1, "Hourly");
+let payment = new Payment("10", "cash");
+mainSystem.takePayment(payment.amount, "Hourly", 1);
+// console.log(mainSystem);
