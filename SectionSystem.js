@@ -47,6 +47,14 @@ class SectionSystem {
     ticket.exit = new Date();
   }
   exitLot(ticketId) {
+    // deleteTicket has side effect, it deletes the ticket from system. It's not a good practice to
+    // use function with side effect in boolean expression. The reason is https://eslint.org/docs/rules/no-unused-expressions
+    
+    // The better way is
+    // const deleted = this._deleteTicket(ticketId, this.handicappedTicketandDriver);
+    // if (!deleted) {
+    //    this._deleteTicket(ticketId, this.normalTicketandDriver);
+    // }
     this._deleteTicket(ticketId, this.handicappedTicketandDriver) ||
       this._deleteTicket(ticketId, this.normalTicketandDriver);
   }
