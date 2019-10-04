@@ -1,9 +1,8 @@
-const Rate = require("./Rate");
+// const Rate = require("./Rate");
 class SectionSystem {
-  constructor(name, unitPrice, unitMinute) {
+  constructor(name, rate) {
     this.name = name;
-    this.rate = new Rate(unitPrice, unitMinute);
-    // Better construct the Rate outside and pass the Rate object into SectionSystem
+    this.rate = rate;
     // The reason is: Does Rate belongs to SectionSystem or is it an separatable entity?
     // The admin can specify the rate, that means admin should also have access to Rate.
     // while for SectionSystem, does it need to know the unitPrice and unitMinute other than calculating the price(which is
@@ -12,6 +11,10 @@ class SectionSystem {
     this.normalTicketandDriver = new Map();
     this.handicappedCapacity = 1;
     this.normalCapacity = 1;
+  }
+  calculateRate(ticketId) {
+    let ticket = this.searchTicket(ticketId);
+    return this.rate.calculateRate(ticket.enter, ticket.exit);
   }
   searchTicket(ticketId) {
     let ticketAndDriver =
@@ -54,14 +57,15 @@ class SectionSystem {
   exitLot(ticketId) {
     // deleteTicket has side effect, it deletes the ticket from system. It's not a good practice to
     // use function with side effect in boolean expression. The reason is https://eslint.org/docs/rules/no-unused-expressions
-    
+
     // The better way is
-    // const deleted = this._deleteTicket(ticketId, this.handicappedTicketandDriver);
-    // if (!deleted) {
-    //    this._deleteTicket(ticketId, this.normalTicketandDriver);
-    // }
-    this._deleteTicket(ticketId, this.handicappedTicketandDriver) ||
+    const deleted = this._deleteTicket(
+      ticketId,
+      this.handicappedTicketandDriver
+    );
+    if (!deleted) {
       this._deleteTicket(ticketId, this.normalTicketandDriver);
+    }
   }
   // .isHandicapped;
 }

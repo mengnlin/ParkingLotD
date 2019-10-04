@@ -1,13 +1,17 @@
 const SectionSystem = require("./SectionSystem");
 const Ticket = require("./Ticket");
 const Driver = require("./Driver");
+const { DailyRate, PremiumRate, HourlyRate } = require("./Rate");
 class MainSystem {
   constructor(location) {
     this.location = location;
     this.sections = new Map();
-    this.addSection("Daily", 10, 60 * 24);
-    this.addSection("Hourly", 3, 60);
-    this.addSection("Premium", 8, 60);
+    const dailyRate = new DailyRate(30);
+    const premiumRate = new PremiumRate(10);
+    const hourlyRate = new HourlyRate(5);
+    this.addSection("Daily", dailyRate);
+    this.addSection("Hourly", hourlyRate);
+    this.addSection("Premium", premiumRate);
   }
   // triger when user click
   displaySections() {
@@ -15,8 +19,8 @@ class MainSystem {
       console.log(section.name);
     });
   }
-  addSection(name, price, units) {
-    this.sections.set(name, new SectionSystem(name, price, units));
+  addSection(name, rate) {
+    this.sections.set(name, new SectionSystem(name, rate));
   }
   removeSection(name) {
     this.sections.delete(name);
@@ -57,19 +61,17 @@ class MainSystem {
   }
   askPayment(ticketId, sectionName) {
     let currentSection = this._getSection(sectionName);
-    let ticket = currentSection.searchTicket(ticketId);
-    let amount = currentSection.rate.calculateRate(ticket.enter, ticket.exit);
-    // rate is an internal property of SectionSystem. MainSystem shouldn't have access to it.
-    // better ask the section for the amount: currentSection.calculateRate(...)
+    let amount = currentSection.calculateRate(ticketId);
     ticket.balanceDue = amount;
     console.log("Your Amount Due is ", ticket.balanceDue);
   }
-  takePayment(paymentAmount, sectionName, ticketId) {
+  takePayment(payment, sectionName, ticketId) {
     // a bonus question: how can we not ask user for ticketId again and again?
     // user already gave us ticketId in askPayment, how do we reuse that?
     // Think about http and browswer, why don't we need to enter user name and password
     // every time we navigate to a different amazon page?
     // hint: session
+    let paymentAmount = payment.getAmount();
     let currentSection = this._getSection(sectionName);
     let ticket = currentSection.searchTicket(ticketId);
     let rate = ticket.balanceDue;
